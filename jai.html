@@ -93,8 +93,9 @@
             font-size: 12px;
             color: white;
             background-color: #28292870;
-                text-align: end;
-    width: 320px;
+            text-align: end;
+            width: 100%;
+            padding-right: .3rem;
         }
 
 
@@ -137,6 +138,21 @@
         }
         }
 
+        #livedatetimediv{
+            justify-content: flex-end;
+            background-color: #28292870;
+        }
+
+        #videoPlayerdiv{
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            align-self: center;
+            justify-content: flex-start;
+        }
+        #videoPlayerdiv > p{
+            width: 100%;
+        }
        /*
          @media (max-width: 980px) {
             #livedatetime {
@@ -225,11 +241,15 @@
                     <div id="timer" class="text-center" style="color: green; font-size: 15px; font-weight: bold; margin-bottom: 20px;padding: 10px 110px 0px 110px;"></div>
                     
 
-                    <div id="videoPlayerdiv" style="display: flex!important;; justify-content: center;">
+                    <!-- <div id="videoPlayerdiv" style="display: flex!important;; justify-content: center;">
                             <div id="livedatetime"></div>
                     
                         <video id="videoPlayer" autoplay muted playsinline loop class="mb-2"></video>
-                    </div>
+                    </div> -->
+                    <div id="videoPlayerdiv" >
+                        <div id="livedatetimediv"><p id="livedatetime"></p></div>
+                        <video id="videoPlayer" autoplay muted playsinline loop class="mb-2"></video>
+                </div>
 
                     <div id="videoCanvasDiv" style="display: none;">
                         <canvas controls autoplay muted playsinline id="videoCanvas" class="mb-2"></canvas>
