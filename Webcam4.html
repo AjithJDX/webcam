@@ -123,39 +123,34 @@
         height: auto; /* Maintain aspect ratio */
     }
 }
-@media (max-width: 390px) {
-  #livedatetime {
-    padding: 0px 0px 0px 186px;
-  }
-  
-}
-@media (max-width: 360px) {
-  #livedatetime {
-    padding: 0px 0px 0px 160px;
-  }
-}
 
-@media (max-width: 317px) {
-  #livedatetime {
-    padding: 0px 0px 0px 120px;
-  }
-}
+        @media (max-width: 400px) {
+            #livedatetime {
+            position: absolute;
+            font-size: 12px;
+            color: white;
+            background-color: #28292870;
+                text-align: end;
+               /* width: 240px; */
+        }
+        }
 
-@media (max-width: 280px) {
-  #livedatetime {
-    padding: 0px 0px 0px 82px;
-  }
-}
-@media (max-width: 240px) {
-  #livedatetime {
-    padding: 0px 0px 0px 25px;
-  }
-}
-@media (max-width: 192px) {
-  #livedatetime {
-    padding: 0px 0px 0px 0px;
-  }
-}
+        #livedatetimediv{
+            justify-content: flex-end;
+            background-color: #28292870;
+        }
+
+        #videoPlayerdiv{
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            align-self: center;
+            justify-content: flex-start;
+        }
+        #videoPlayerdiv > p{
+            width: 100%;
+        }
+
 /* ////////////////////////////////////////////////////////////////////////////////// */
         
     </style>
@@ -176,13 +171,14 @@
                     <div class="title lg-4">Take a Video</div>
                     <div id="div" class="text-center float-right" style="color: red; font-size: 13px; font-weight: bold;"></div>
                     <div id="timer" class="text-center" style="color: green; font-size: 15px; font-weight: bold; margin-bottom: 20px;padding: 10px 110px 0px 110px;"></div>
-                    <div id="livedatetimediv" class="text-center" style="display: flex!important; justify-content: center;">
+<!--                     <div id="livedatetimediv" class="text-center" style="display: flex!important; justify-content: center;">
                         <div id="livedatetime"></div>
-                    </div>
+                    </div> -->
 
-                    <div id="videoPlayerdiv" class="text-center" style="display: flex!important;; justify-content: center;">
+                    <div id="videoPlayerdiv" >
+                        <div id="livedatetimediv"><p id="livedatetime"></p></div>
                         <video id="videoPlayer" autoplay muted playsinline loop class="mb-2"></video>
-                    </div>
+                </div>
 
                     <div id="videoCanvasDiv" style="display: none;">
                         <canvas controls autoplay muted playsinline id="videoCanvas" class="mb-2"></canvas>
