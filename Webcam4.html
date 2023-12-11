@@ -270,7 +270,7 @@
                         <div id="rersubBtn" style="display: none;">
                             <button id="rerecordBtn" class="btn btn-primary"> Rerecord Video</button>
 
-                            <a href="successimg.html"><button id="submitbtn" class="btn btn-primary" > Submit</button></a>
+                           <button id="submitBtn" class="btn btn-primary" > Submit</button>
                         </div>
                         <div id="timer" class="mt-2"></div>
                     </div>
@@ -325,7 +325,8 @@
         const videoCanvas = document.getElementById('videoCanvas');
         const recordButton = document.getElementById('recordBtn');
         const rerecordBtn = document.getElementById('rerecordBtn');
-        const submitbtn = document.getElementById('submitbtn');
+         // Get a reference to the submit button
+         var submitBtn = document.getElementById('submitBtn');
         const timerElement = document.getElementById('timer');
         const previewElement = document.getElementById('preview');
         const previewSizeElement = document.getElementById('previewSize');
@@ -359,9 +360,9 @@
         // Re-record button click event
         rerecordBtn.addEventListener('click', reRecordVideo);
 
-        // Add a click event listener to the submit button
+       // Add a click event listener to the submit button
         submitBtn.addEventListener('click', gonextpage);
-        
+
         // Add a click event listener to the "Start Recording" button
         recordBtnDiv.addEventListener('click', function() {
             const captionAlert = document.getElementById('CaptionAlert');
@@ -480,7 +481,7 @@
                 livedatetimediv.style.display = 'flex';
                 recordButton.disabled = true;
                 rerecordBtn.disabled = true;
-                submitbtn.disabled = true;
+                submitBtn.disabled = true;
                 mediaRecorder.start();
                 isRecording = true;
 
@@ -496,9 +497,10 @@
                         isRecording = false;
                         recordBtn.disabled = true; // Disable the Start Recording button
                         rerecordBtn.disabled = false;
-                        submitbtn.disabled = false;
+                        submitBtn.disabled = false;
                         timerElement.textContent = '';
                     }
+                    
                 }, 1000);
 
                 mediaRecorder.ondataavailable = (event) => {
@@ -533,7 +535,12 @@
             }
         }
 
-
+        function gonextpage() {
+      // Perform any actions you need before navigating to the next page
+      console.log('Going to the next page!');
+      // Navigate to the next page (replace 'nextpage.html' with your actual page URL)
+      window.location.href = 'successimg.html';
+    }
         // Function to format time in HH:MM:SS format
         function formatTime(seconds) {
             const hours = Math.floor(seconds / 3600);
@@ -600,12 +607,6 @@
             document.body.removeChild(a);
         }
 
-         function gonextpage() {
-      // Perform any actions you need before navigating to the next page
-      console.log('Going to the next page!');
-      // Navigate to the next page (replace 'nextpage.html' with your actual page URL)
-      window.location.href = 'successimg.html';
-    }
         // Function to update the date and time
         function updateDateTime() {
             const dateTimeElement = document.getElementById('dateTime');
