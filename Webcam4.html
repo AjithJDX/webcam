@@ -359,6 +359,9 @@
         // Re-record button click event
         rerecordBtn.addEventListener('click', reRecordVideo);
 
+        // Add a click event listener to the submit button
+        submitBtn.addEventListener('click', gonextpage);
+        
         // Add a click event listener to the "Start Recording" button
         recordBtnDiv.addEventListener('click', function() {
             const captionAlert = document.getElementById('CaptionAlert');
@@ -597,6 +600,12 @@
             document.body.removeChild(a);
         }
 
+         function gonextpage() {
+      // Perform any actions you need before navigating to the next page
+      console.log('Going to the next page!');
+      // Navigate to the next page (replace 'nextpage.html' with your actual page URL)
+      window.location.href = 'successimg.html';
+    }
         // Function to update the date and time
         function updateDateTime() {
             const dateTimeElement = document.getElementById('dateTime');
