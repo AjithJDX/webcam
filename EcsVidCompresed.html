@@ -116,21 +116,19 @@
 
        
 
-            #previewvid,
-            #videoCanvasDiv {
-                 display: flex;
-            flex-direction: column;
-            position: relative;
-            align-self: center;
-            justify-content: flex-start;
-          
-        }
-        @media (max-width:500px){
-            #videoPlayer{
-                width: 320px;
-                height: 240px;
+            /* Media query for screens below 360px */
+        @media screen and (max-width: 360px) {
+
+            #videoCanvas,
+            #preview {
+                width: 100%;
+                /* Make the elements take the full width of the screen */
+                height: auto;
+                /* Maintain aspect ratio */
             }
         }
+
+       
         @media (max-width: 400px) {
             #livedatetime {
                 position: absolute;
@@ -374,8 +372,7 @@
               });
 
                 const ctx = videoCanvas.getContext("2d");
-                videoCanvas.width = 320;
-                videoCanvas.height = 240;
+                
 
                 // Play the live video stream on the canvas
                 const video = document.getElementById("videoPlayer");
