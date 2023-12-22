@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="font-family.css">
     <style>
-        html,
+      html,
         body {
             background: #d7dadd;
             font-family: 'Josefin Sans', Arial, "Microsoft JhengHei", "fontawesome", serif;
@@ -45,7 +45,8 @@
 
         #videoCanvas {
             border: 1px solid #050202;
-           
+            height: 240px;
+            width: 320px;
         }
 
         #videoPlayer {
@@ -54,7 +55,8 @@
 
         #preview {
             border: 1px solid #050202;
-           
+            height: 240px;
+            width: 320px;
         }
 
         #buttonsContainer {
@@ -112,11 +114,18 @@
             }
         }
 
-       
+        /* Media query for screens below 360px */
+        @media screen and (max-width: 360px) {
 
-           
+            #videoCanvas,
+            #preview {
+                width: 100%;
+                /* Make the elements take the full width of the screen */
+                height: auto;
+                /* Maintain aspect ratio */
+            }
+        }
 
-       
         @media (max-width: 400px) {
             #livedatetime {
                 position: absolute;
@@ -377,7 +386,7 @@
                         // Set the canvas background color to black
                         ctx.globalAlpha = 0.3;
                         ctx.fillStyle = "black";
-                        ctx.fillRect(0, -222, videoCanvas.width, videoCanvas.height);
+                        ctx.fillRect(0, -230, videoCanvas.width, videoCanvas.height);
                         // Draw the video on the canvas
                         ctx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
 
