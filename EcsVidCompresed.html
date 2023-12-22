@@ -369,10 +369,14 @@
                 audioBitsPerSecond: 128000,
               });
 
-                const ctx = videoCanvas.getContext("2d");
-                videoCanvas.width = 320;
-                videoCanvas.height = 240;
+                  // Extract video dimensions
+                const { width, height } = videoStream.getTracks()[0].getSettings();
 
+                // Set up videoCanvas with dynamic dimensions
+                const videoCanvas = document.getElementById("videoCanvas");
+ const ctx = videoCanvas.getContext("2d");
+        videoCanvas.width = width;
+        videoCanvas.height = height;
                 // Play the live video stream on the canvas
                 const video = document.getElementById("videoPlayer");
                 video.srcObject = videoStream;
