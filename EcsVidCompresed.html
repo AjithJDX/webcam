@@ -370,7 +370,8 @@
               });
 
                 const ctx = videoCanvas.getContext("2d");
-                
+                videoCanvas.width = 320;
+                videoCanvas.height = 240;
 
                 // Play the live video stream on the canvas
                 const video = document.getElementById("videoPlayer");
