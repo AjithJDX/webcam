@@ -365,9 +365,16 @@
 
               
 
-            // Set the initial dimensions of the livedatetime element
-            livedatetime.style.width = width + "px";
-            livedatetime.style.height = height + "px";
+            // Set width and height of livedatetime
+            const livedatetimeWidth = videoCanvas.width - 0; // Adjust as needed
+            const livedatetimeHeight = 17; // Adjust as needed
+            livedatetime.style.width = `${livedatetimeWidth}px`;
+            livedatetime.style.height = `${livedatetimeHeight}px`;
+
+            // Adjust ctx.fillRect parameters based on livedatetime dimensions
+            //const rectTop = -livedatetimeHeight;
+            const rectWidth = livedatetimeWidth;
+            const rectHeight = livedatetimeHeight;
 
                 // Play the live video stream on the canvas
                 const video = document.getElementById("videoPlayer");
@@ -380,8 +387,7 @@
                         ctx.globalAlpha = 0.3;
                         ctx.fillStyle = "black";
                          // Calculate and set the modified values for ctx.fillRect
-                const rectHeight = height - 222;
-                ctx.fillRect(0, -rectHeight, width, height);
+                         ctx.fillRect(0, 0, rectWidth, rectHeight);
                         // Draw the video on the canvas
                         ctx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
 
@@ -390,9 +396,9 @@
                         const formattedDateTime = formatDate(now);
                         ctx.globalAlpha = 1;
                         ctx.fillStyle = "white";
-                        ctx.font = "13px";
+                        ctx.font = "12px 'Josefin Sans', Arial, 'Microsoft JhengHei', 'fontawesome', serif";
                         ctx.textAlign = "right"; // Align text to the right
-                        ctx.fillText(formattedDateTime, videoCanvas.width - 8, 16);
+                        ctx.fillText(formattedDateTime, videoCanvas.width - 5, 16);
 
                         requestAnimationFrame(drawVideoFrame);
                     };
