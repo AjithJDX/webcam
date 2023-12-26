@@ -371,14 +371,16 @@
                 video.onloadedmetadata = () => {
                     video.play();
                   const drawVideoFrame = () => {
-    // Set the canvas background color to black with transparency
-    if (window.innerWidth < 400) {
-        ctx.globalAlpha = 0.3;
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, -240, videoCanvas.width, videoCanvas.height);
-    } else {
+                        // Set the canvas background color to black
+
+                       if (window.innerWidth < 400) {
+                        ctx.globalAlpha = 0.3;
+                        ctx.fillStyle = "black";
+                        ctx.fillRect(0, -235, videoCanvas.width, videoCanvas.height);
+                       }
+                      else {
         // Clear the canvas if the viewport width is greater than or equal to 400 pixels
-        ctx.clearRect(0, -222, videoCanvas.width, videoCanvas.height);
+        ctx.fillRect(0, -222, videoCanvas.width, videoCanvas.height);
     }
 
     // Draw the video on the canvas
@@ -389,7 +391,7 @@
     const formattedDateTime = formatDate(now);
     ctx.globalAlpha = 1;
     ctx.fillStyle = "white";
-    ctx.font = "13px";
+    ctx.font = "12px 'Josefin Sans', Arial, 'Microsoft JhengHei', 'fontawesome', serif";
     ctx.textAlign = "right"; // Align text to the right
     ctx.fillText(formattedDateTime, videoCanvas.width - 8, 16);
 
