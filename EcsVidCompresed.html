@@ -371,24 +371,26 @@
                 video.onloadedmetadata = () => {
                     video.play();
                     const drawVideoFrame = () => {
-                        // Set the canvas background color to black
-                        ctx.globalAlpha = 0.3;
-                        ctx.fillStyle = "black";
-                        ctx.fillRect(0, -222, videoCanvas.width, videoCanvas.height);
-                        // Draw the video on the canvas
-                        ctx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+    // Set the canvas background color to semi-transparent black
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, videoCanvas.width, videoCanvas.height);
 
-                        // Display date and time on the canvas on the right side
-                        const now = new Date();
-                        const formattedDateTime = formatDate(now);
-                        ctx.globalAlpha = 1;
-                        ctx.fillStyle = "white";
-                        ctx.font = "13px";
-                        ctx.textAlign = "right"; // Align text to the right
-                        ctx.fillText(formattedDateTime, videoCanvas.width - 8, 16);
+    // Draw the video on the canvas
+    ctx.globalAlpha = 1; // Reset the alpha value for full opacity
+    ctx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
 
-                        requestAnimationFrame(drawVideoFrame);
-                    };
+    // Display date and time on the canvas on the right side
+    const now = new Date();
+    const formattedDateTime = formatDate(now);
+    ctx.fillStyle = "white";
+    ctx.font = "13px";
+    ctx.textAlign = "right"; // Align text to the right
+    ctx.fillText(formattedDateTime, videoCanvas.width - 8, 16);
+
+    requestAnimationFrame(drawVideoFrame);
+};
+
                     drawVideoFrame();
                 };
             } catch (error) {
