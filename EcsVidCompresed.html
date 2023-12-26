@@ -363,16 +363,12 @@
                 audioBitsPerSecond: 128000,
               });
 
-                // Calculate the initial values for width and height
-            const { width, height } = videoCanvas;
+              
 
             // Set the initial dimensions of the livedatetime element
             livedatetime.style.width = width + "px";
             livedatetime.style.height = height + "px";
 
-            // Set up the videoCanvas with dynamic dimensions
-            videoCanvas.width = width;
-            videoCanvas.height = height;
                 // Play the live video stream on the canvas
                 const video = document.getElementById("videoPlayer");
                 video.srcObject = videoStream;
