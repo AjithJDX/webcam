@@ -370,35 +370,25 @@
                 video.style.display = "block";
                 video.onloadedmetadata = () => {
                     video.play();
-                  const drawVideoFrame = () => {
+                   const drawVideoFrame = () => {
                         // Set the canvas background color to black
-
-                       if (window.innerWidth < 400) {
                         ctx.globalAlpha = 0.3;
                         ctx.fillStyle = "black";
-                        ctx.fillRect(0, -300, videoCanvas.width, videoCanvas.height);
-                       }
-                      else {
-        // Clear the canvas if the viewport width is greater than or equal to 400 pixels
-                          ctx.globalAlpha = 0.3;
-                        ctx.fillStyle = "black";
-        ctx.fillRect(0, -222, videoCanvas.width, videoCanvas.height);
-    }
+                        ctx.fillRect(0, -222, videoCanvas.width, videoCanvas.height);
+                        // Draw the video on the canvas
+                        ctx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
 
-    // Draw the video on the canvas
-    ctx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+                        // Display date and time on the canvas on the right side
+                        const now = new Date();
+                        const formattedDateTime = formatDate(now);
+                        ctx.globalAlpha = 1;
+                        ctx.fillStyle = "white";
+                        ctx.font = "13px";
+                        ctx.textAlign = "right"; // Align text to the right
+                        ctx.fillText(formattedDateTime, videoCanvas.width - 8, 16);
 
-    // Display date and time on the canvas on the right side
-    const now = new Date();
-    const formattedDateTime = formatDate(now);
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = "white";
-    ctx.font = "12px 'Josefin Sans', Arial, 'Microsoft JhengHei', 'fontawesome', serif";
-    ctx.textAlign = "right"; // Align text to the right
-    ctx.fillText(formattedDateTime, videoCanvas.width - 8, 16);
-
-    requestAnimationFrame(drawVideoFrame);
-};
+                        requestAnimationFrame(drawVideoFrame);
+                    };
 
 
                     drawVideoFrame();
