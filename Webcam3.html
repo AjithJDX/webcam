@@ -6,32 +6,32 @@
     <title>Camera Stream</title>
 </head>
 <body>
-    <button id="startButton">Start Camera</button>
-    <video id="cameraStream" width="640" height="480"></video>
+    <video id="cameraStream" width="640" height="480" autoplay></video>
+    <button id="startCameraBtn">Start Camera</button>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('cameraStream');
-            const startButton = document.getElementById('startButton');
+            const startCameraBtn = document.getElementById('startCameraBtn');
 
-            startButton.addEventListener('click', () => {
-                // Check if the browser supports getUserMedia
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    // Request user's permission to access the camera
+            // Check if the browser supports getUserMedia
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                startCameraBtn.addEventListener('click', () => {
+                    // Access the user's camera
                     navigator.mediaDevices.getUserMedia({ video: true })
                         .then((stream) => {
                             // Set the video source to the user's camera stream
                             video.srcObject = stream;
-                            // Play the video
-                            video.play();
+                            // Hide the start button once the camera is started
+                            startCameraBtn.style.display = 'none';
                         })
                         .catch((error) => {
                             console.error('Error accessing camera:', error);
                         });
-                } else {
-                    console.error('getUserMedia is not supported on this browser');
-                }
-            });
+                });
+            } else {
+                console.error('getUserMedia is not supported on this browser');
+            }
         });
     </script>
 </body>
