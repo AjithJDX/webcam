@@ -6,23 +6,23 @@
     <title>Camera Stream</title>
 </head>
 <body>
-    <video id="cameraStream" width="640" height="480"></video>
     <button id="startButton">Start Camera</button>
+    <video id="cameraStream" width="640" height="480"></video>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('cameraStream');
             const startButton = document.getElementById('startButton');
 
-            function startCamera() {
+            startButton.addEventListener('click', () => {
                 // Check if the browser supports getUserMedia
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    // Access the user's camera
+                    // Request user's permission to access the camera
                     navigator.mediaDevices.getUserMedia({ video: true })
                         .then((stream) => {
                             // Set the video source to the user's camera stream
                             video.srcObject = stream;
-                            // Play the video when camera access is granted
+                            // Play the video
                             video.play();
                         })
                         .catch((error) => {
@@ -31,16 +31,7 @@
                 } else {
                     console.error('getUserMedia is not supported on this browser');
                 }
-            }
-
-            // Trigger video start on button click
-            startButton.addEventListener('click', startCamera);
-
-            // You can also trigger the camera start automatically on page load for non-iOS devices
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            if (!isIOS) {
-                startCamera();
-            }
+            });
         });
     </script>
 </body>
