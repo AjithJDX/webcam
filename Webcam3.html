@@ -1,38 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Stream</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera Capture</title>
+  <style>
+    /* Add any additional styling here */
+    .red-button-class {
+      background-color: red;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <video id="cameraStream" width="640" height="480" autoplay></video>
-    <button id="startCameraBtn">Start Camera</button>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('cameraStream');
-            const startCameraBtn = document.getElementById('startCameraBtn');
+<video autoplay muted playsinline id="video"></video>
+<button id="grabFrameButton" disabled>Grab Frame</button>
+<button id="takePhotoButton" disabled>Take Photo</button>
 
-            // Check if the browser supports getUserMedia
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                startCameraBtn.addEventListener('click', () => {
-                    // Access the user's camera
-                    navigator.mediaDevices.getUserMedia({ video: true })
-                        .then((stream) => {
-                            // Set the video source to the user's camera stream
-                            video.srcObject = stream;
-                            // Hide the start button once the camera is started
-                            startCameraBtn.style.display = 'none';
-                        })
-                        .catch((error) => {
-                            console.error('Error accessing camera:', error);
-                        });
-                });
-            } else {
-                console.error('getUserMedia is not supported on this browser');
-            }
-        });
-    </script>
+<!-- Add the SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  let imageCapture;
+  let mediaStream;
+
+  navigator.mediaDevices.getUserMedia({
+    video: {
+      width: { ideal: 640 },
+      height: { ideal: 480 },
+    },
+  }).then((stream) => {
+    mediaStream = stream;
+    document.querySelector("video").srcObject = stream;
+    
+    const track = mediaStream.getVideoTracks()[0];
+    
+    if (track) {
+      imageCapture = new ImageCapture(track);
+
+      // Enable buttons when the video starts playing
+      document.querySelector("video").addEventListener("play", () => {
+        document.querySelector("#grabFrameButton").disabled = false;
+        document.querySelector("#takePhotoButton").disabled = false;
+      });
+    } else {
+      // Handle the case where no video track is available
+      console.error("No video track available.");
+    }
+  }).catch((error) => {
+    console.error(error);
+
+    // Display SweetAlert on error
+    Swal.fire({
+      title: '<i class="fa-solid fa-video-slash"></i>',
+      text: "Device in use in another browser. Kindly check.",
+      icon: null, // Set icon to null to use HTML for the title
+      buttons: true,
+      dangerMode: true,
+      allowOutsideClick: false,
+      customClass: {
+        confirmButton: 'red-button-class',
+        cancelButton: 'red-button-class'
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
