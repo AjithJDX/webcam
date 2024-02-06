@@ -14,7 +14,8 @@
 </head>
 <body>
 
-<video autoplay muted playsinline id="video"></video>
+<video muted playsinline id="video"></video>
+<button id="startButton">Start Camera</button>
 <button id="grabFrameButton" disabled>Grab Frame</button>
 <button id="takePhotoButton" disabled>Take Photo</button>
 
@@ -25,46 +26,60 @@
   let imageCapture;
   let mediaStream;
 
-  navigator.mediaDevices.getUserMedia({
-    video: {
-      width: { ideal: 640 },
-      height: { ideal: 480 },
-    },
-  }).then((stream) => {
-    mediaStream = stream;
-    document.querySelector("video").srcObject = stream;
-    
-    const track = mediaStream.getVideoTracks()[0];
-    
-    if (track) {
-      imageCapture = new ImageCapture(track);
+  const video = document.getElementById('video');
+  const startButton = document.getElementById('startButton');
+  const grabFrameButton = document.getElementById('grabFrameButton');
+  const takePhotoButton = document.getElementById('takePhotoButton');
 
-      // Enable buttons when the video starts playing
-      document.querySelector("video").addEventListener("play", () => {
-        document.querySelector("#grabFrameButton").disabled = false;
-        document.querySelector("#takePhotoButton").disabled = false;
-      });
-    } else {
-      // Handle the case where no video track is available
-      console.error("No video track available.");
-    }
-  }).catch((error) => {
-    console.error(error);
+  startButton.addEventListener('click', startCamera);
 
-    // Display SweetAlert on error
-    Swal.fire({
-      title: '<i class="fa-solid fa-video-slash"></i>',
-      text: "Device in use in another browser. Kindly check.",
-      icon: null, // Set icon to null to use HTML for the title
-      buttons: true,
-      dangerMode: true,
-      allowOutsideClick: false,
-      customClass: {
-        confirmButton: 'red-button-class',
-        cancelButton: 'red-button-class'
+  function startCamera() {
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+      },
+    }).then((stream) => {
+      mediaStream = stream;
+      video.srcObject = stream;
+
+      const track = mediaStream.getVideoTracks()[0];
+
+      if (track) {
+        imageCapture = new ImageCapture(track);
+
+        // Enable buttons when the video starts playing
+        video.addEventListener('play', () => {
+          grabFrameButton.disabled = false;
+          takePhotoButton.disabled = false;
+        });
+
+        // Start playing the video after the user gesture
+        video.play().catch((error) => {
+          console.error('Error starting video playback:', error);
+        });
+      } else {
+        // Handle the case where no video track is available
+        console.error('No video track available.');
       }
+    }).catch((error) => {
+      console.error(error);
+
+      // Display SweetAlert on error
+      Swal.fire({
+        title: '<i class="fa-solid fa-video-slash"></i>',
+        text: 'Device in use in another browser. Kindly check.',
+        icon: null, // Set icon to null to use HTML for the title
+        buttons: true,
+        dangerMode: true,
+        allowOutsideClick: false,
+        customClass: {
+          confirmButton: 'red-button-class',
+          cancelButton: 'red-button-class',
+        },
+      });
     });
-  });
+  }
 </script>
 
 </body>
