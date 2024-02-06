@@ -1,61 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video to Image</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Capture</title>
+  <script defer src="app.js"></script>
 </head>
 <body>
-    <video id="video" width="640" height="480" autoplay muted playsinline></video>
-    <button id="captureButton">Capture Image</button>
-    <div id="outputContainer"></div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get video and button elements
-            var video = document.getElementById("video");
-            var captureButton = document.getElementById("captureButton");
-            var outputContainer = document.getElementById("outputContainer");
+<video id="video" width="640" height="480" autoplay></video>
 
-            // Check if getUserMedia is supported by the browser
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function(stream) {
-                        // Set the video source to the user's webcam
-                        video.srcObject = stream;
-                    })
-                    .catch(function(error) {
-                        console.error("Error accessing webcam: ", error);
-                    });
-            } else {
-                console.error("getUserMedia is not supported");
-            }
+<button id="grabFrameButton" onclick="onGrabFrameButtonClick()">Grab Frame</button>
+<img id="grabFrameImage" alt="Grab Frame Image">
 
-            // Capture image from video and display in an image tag
-            function captureImage() {
-                // Create a new image element
-                var img = document.createElement("img");
+<button id="takePhotoButton" onclick="onTakePhotoButtonClick()">Take Photo</button>
+<img id="takePhotoImage" alt="Take Photo Image">
 
-                // Draw the current video frame onto the image element
-                var canvas = document.createElement("canvas");
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                var context = canvas.getContext("2d");
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                // Set the image source to the canvas data URL
-                img.src = canvas.toDataURL("image/png");
+<script>
 
-                // Append the image to the output container
-                outputContainer.appendChild(img);
-            }
 
-            // Listen for the video to play
-            video.addEventListener("play", function() {
-                // Listen for button click to capture image
-                captureButton.addEventListener("click", captureImage);
-            });
-        });
-    </script>
+let mediaStream;
+let videoElement = document.querySelector("#video");
+
+// Function to enable buttons
+const enableButtons = () => {
+  document.querySelector("#grabFrameButton").disabled = false;
+  document.querySelector("#takePhotoButton").disabled = false;
+};
+
+// Function to handle video play event
+const handleVideoPlay = () => {
+  enableButtons();
+};
+
+// Check if the video can play and enable buttons
+videoElement.addEventListener("canplay", enableButtons);
+
+// Access the user's camera
+navigator.mediaDevices.getUserMedia({
+  video: {
+    width: { ideal: 640 },
+    height: { ideal: 480 },
+  },
+}).then((stream) => {
+  mediaStream = stream;
+  // Set the video stream to the video element
+  videoElement.srcObject = stream;
+  // Add event listener for video play
+  videoElement.addEventListener("play", handleVideoPlay);
+}).catch((error) => {
+  console.error(error);
+  // Handle errors (display an error message to the user, etc.)
+});
+
+// Function to capture a frame and get base64 data
+function onGrabFrameButtonClick() {
+  const imgElement = document.querySelector("#grabFrameImage");
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  canvas.width = videoElement.videoWidth;
+  canvas.height = videoElement.videoHeight;
+
+  // Draw the current frame from the video element onto the canvas
+  context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+  // Convert canvas content to base64
+  const base64 = canvas.toDataURL("image/jpeg");
+
+  // Set the src attribute of imgElement to the base64 data
+  imgElement.src = base64;
+}
+
+// Function to take a photo using canvas
+function onTakePhotoButtonClick() {
+  const imgElement = document.querySelector("#takePhotoImage");
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  canvas.width = videoElement.videoWidth;
+  canvas.height = videoElement.videoHeight;
+
+  // Draw the current frame from the video element onto the canvas
+  context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+  // Convert canvas content to base64
+  const base64 = canvas.toDataURL("image/jpeg");
+
+  // Set the src attribute of imgElement to the base64 data
+  imgElement.src = base64;
+}
+
+</script>
+
 </body>
 </html>
