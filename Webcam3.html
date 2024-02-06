@@ -49,7 +49,7 @@
         imageCapture = new ImageCapture(track);
 
         // Enable buttons when the video starts playing
-        video.addEventListener('play', () => {
+        video.addEventListener('playing', () => {
           grabFrameButton.disabled = false;
           takePhotoButton.disabled = false;
         });
