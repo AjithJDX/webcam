@@ -1,86 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Camera Capture</title>
-  <style>
-    /* Add any additional styling here */
-    .red-button-class {
-      background-color: red;
-      color: white;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to Image</title>
 </head>
 <body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="captureButton">Capture Image</button>
+    <div id="outputContainer"></div>
 
-<video muted playsinline id="video"></video>
-<button id="startButton">Start Camera</button>
-<button id="grabFrameButton" disabled>Grab Frame</button>
-<button id="takePhotoButton" disabled>Take Photo</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get video and button elements
+            var video = document.getElementById("video");
+            var captureButton = document.getElementById("captureButton");
+            var outputContainer = document.getElementById("outputContainer");
 
-<!-- Add the SweetAlert library -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            // Check if getUserMedia is supported by the browser
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        // Set the video source to the user's webcam
+                        video.srcObject = stream;
+                    })
+                    .catch(function(error) {
+                        console.error("Error accessing webcam: ", error);
+                    });
+            } else {
+                console.error("getUserMedia is not supported");
+            }
 
-<script>
-  let imageCapture;
-  let mediaStream;
+            // Capture image from video and display in an image tag
+            function captureImage() {
+                // Create a new image element
+                var img = document.createElement("img");
 
-  const video = document.getElementById('video');
-  const startButton = document.getElementById('startButton');
-  const grabFrameButton = document.getElementById('grabFrameButton');
-  const takePhotoButton = document.getElementById('takePhotoButton');
+                // Draw the current video frame onto the image element
+                var canvas = document.createElement("canvas");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                var context = canvas.getContext("2d");
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  startButton.addEventListener('click', startCamera);
+                // Set the image source to the canvas data URL
+                img.src = canvas.toDataURL("image/png");
 
-  function startCamera() {
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 },
-      },
-    }).then((stream) => {
-      mediaStream = stream;
-      video.srcObject = stream;
+                // Append the image to the output container
+                outputContainer.appendChild(img);
+            }
 
-      const track = mediaStream.getVideoTracks()[0];
-
-      if (track) {
-        imageCapture = new ImageCapture(track);
-
-        // Enable buttons when the video starts playing
-        video.addEventListener('playing', () => {
-          grabFrameButton.disabled = false;
-          takePhotoButton.disabled = false;
+            // Listen for the video to play
+            video.addEventListener("play", function() {
+                // Listen for button click to capture image
+                captureButton.addEventListener("click", captureImage);
+            });
         });
-
-        // Start playing the video after the user gesture
-        video.play().catch((error) => {
-          console.error('Error starting video playback:', error);
-        });
-      } else {
-        // Handle the case where no video track is available
-        console.error('No video track available.');
-      }
-    }).catch((error) => {
-      console.error(error);
-
-      // Display SweetAlert on error
-      Swal.fire({
-        title: '<i class="fa-solid fa-video-slash"></i>',
-        text: 'Device in use in another browser. Kindly check.',
-        icon: null, // Set icon to null to use HTML for the title
-        buttons: true,
-        dangerMode: true,
-        allowOutsideClick: false,
-        customClass: {
-          confirmButton: 'red-button-class',
-          cancelButton: 'red-button-class',
-        },
-      });
-    });
-  }
-</script>
-
+    </script>
 </body>
 </html>
